@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player with Subtitles</title>
+</head>
+<body>
+    <h1>Video Player with Subtitles</h1>
+    
+    <ul id="videoList"></ul>
+    
+    <video id="videoPlayer" controls width="640" height="360">
+        <source id="videoSource" type="video/mp4">
+        <track id="subtitleTrack" kind="subtitles" srclang="en">
+        Your browser does not support the video tag.
+    </video>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoList = document.getElementById('videoList');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoSource = document.getElementById('videoSource');
+            const subtitleTrack = document.getElementById('subtitleTrack');
+            
+            // Function to add a video to the list
+            function addVideoToPlaylist(videoFileName, subtitleFileName) {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="#" data-video="${videoFileName}" data-subtitle="${subtitleFileName}">${videoFileName}</a>`;
+                videoList.appendChild(listItem);
+            }
+            
+            // Function to play selected video
+            function playVideo(videoFileName, subtitleFileName) {
+                videoSource.src = videoFileName;
+                subtitleTrack.src = subtitleFileName;
+                videoPlayer.load();
+                videoPlayer.play();
+            }
+            
+            // List of video files and their subtitles
+            const videos = [
+                { video: 'video1.mp4', subtitle: 'subtitle1.srt' },
+                { video: 'video2.mp4', subtitle: 'subtitle2.srt' },
+                // Add more videos and subtitles here
+            ];
+            
+            // Populate the video list
+            videos.forEach(item => {
+                addVideoToPlaylist(item.video, item.subtitle);
+            });
+            
+            // Handle video clicks
+            videoList.addEventListener('click', (event) => {
+                event.preventDefault();
+                const videoFileName = event.target.getAttribute('data-video');
+                const subtitleFileName = event.target.getAttribute('data-subtitle');
+                if (videoFileName && subtitleFileName) {
+                    playVideo(videoFileName, subtitleFileName);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
